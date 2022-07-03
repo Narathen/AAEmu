@@ -104,6 +104,14 @@ namespace AAEmu.Game.Models.Game.AI.v2
                 {
                     _log.Warn("PickSkillAndUseIt:UseSelfSkill Owner.ObjId {0}, Owner.TemplateId {1}, SkillId {2}", Ai.Owner.ObjId, Ai.Owner.TemplateId, skillTemplateSelf.Id);
                     // TODO how to eliminate spam with skills? The following solution breaks the Npc attack
+                    if (Ai.Owner.Template.BaseSkillDelay == 0)
+                    {
+                        const uint Delay1 = 10000u;
+                        const uint Delay2 = 13000u;
+                        UseSkill(skillSelf, target, Ai.Owner.Template.BaseSkillDelay);
+                        Ai.Owner.Cooldowns.AddCooldown(skillSelf.Template.Id, (uint)Rand.Next(Delay1, Delay2));
+                        return;
+                    }
                     UseSkill(skillSelf, target, Ai.Owner.Template.BaseSkillDelay);
                     return;
                 }
@@ -123,6 +131,14 @@ namespace AAEmu.Game.Models.Game.AI.v2
             {
                 _log.Warn("PickSkillAndUseIt:UseSkill Owner.ObjId {0}, Owner.TemplateId {1}, SkillId {2} on Target {3}", Ai.Owner.ObjId, Ai.Owner.TemplateId, skillTemplate.Id, target.ObjId);
                 // TODO how to eliminate spam with skills? The following solution breaks the Npc attack
+                if (Ai.Owner.Template.BaseSkillDelay == 0)
+                {
+                    const uint Delay1 = 1500u;
+                    const uint Delay2 = 1550u;
+                    UseSkill(skill, target, Ai.Owner.Template.BaseSkillDelay);
+                    Ai.Owner.Cooldowns.AddCooldown(skill.Template.Id, (uint)Rand.Next(Delay1, Delay2));
+                    return;
+                }
                 UseSkill(skill, target, Ai.Owner.Template.BaseSkillDelay);
             }
         }
@@ -130,6 +146,9 @@ namespace AAEmu.Game.Models.Game.AI.v2
         // UseSkill (delay)
         public void UseSkill(Skill skill, BaseUnit target, float delay = 0)
         {
+            if (target == null) { return; }
+            if (skill == null) { return; }
+
             _nextTimeToDelay = delay;
             var skillCaster = SkillCaster.GetByType(SkillCasterType.Unit);
             skillCaster.ObjId = Ai.Owner.ObjId;
@@ -158,6 +177,7 @@ namespace AAEmu.Game.Models.Game.AI.v2
 
             skill.Callback = OnSkillEnded;
             var result = skill.Use(Ai.Owner, skillCaster, skillCastTarget, skillObject);
+            if (skill.Template.TargetType == SkillTargetType.Self) { return; } // fix the eastward turn when using SelfSkill
             if (result == SkillResult.Success)
                 Ai.Owner.LookTowards(target.Transform.World.Position);
         }
