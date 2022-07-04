@@ -103,7 +103,7 @@ namespace AAEmu.Game.Models.Game.AI.v2
                 if (!Ai.Owner.Cooldowns.CheckCooldown(skillTemplateSelf.Id))
                 {
                     _log.Warn("PickSkillAndUseIt:UseSelfSkill Owner.ObjId {0}, Owner.TemplateId {1}, SkillId {2}", Ai.Owner.ObjId, Ai.Owner.TemplateId, skillTemplateSelf.Id);
-                    // TODO how to eliminate spam with skills? The following solution breaks the Npc attack
+                    // TODO how to eliminate spam with skills?
                     if (Ai.Owner.Template.BaseSkillDelay == 0)
                     {
                         const uint Delay1 = 10000u;
@@ -130,7 +130,7 @@ namespace AAEmu.Game.Models.Game.AI.v2
             if (!Ai.Owner.Cooldowns.CheckCooldown(skillTemplate.Id))
             {
                 _log.Warn("PickSkillAndUseIt:UseSkill Owner.ObjId {0}, Owner.TemplateId {1}, SkillId {2} on Target {3}", Ai.Owner.ObjId, Ai.Owner.TemplateId, skillTemplate.Id, target.ObjId);
-                // TODO how to eliminate spam with skills? The following solution breaks the Npc attack
+                // TODO how to eliminate spam with skills?
                 if (Ai.Owner.Template.BaseSkillDelay == 0)
                 {
                     const uint Delay1 = 1500u;

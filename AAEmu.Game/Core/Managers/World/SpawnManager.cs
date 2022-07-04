@@ -75,11 +75,17 @@ namespace AAEmu.Game.Core.Managers.World
                     else
                     {
                         if (JsonHelper.TryDeserializeObject(contents, out List<NpcSpawner> spawners, out _))
+                        {
+                            var entry = 0;
                             foreach (var spawner in spawners)
                             {
+                                entry++;
                                 if (!NpcManager.Instance.Exist(spawner.UnitId))
+                                {
+                                    _log.Warn($"Npc Template {spawner.UnitId} (file entry {entry}) doesn't exist - {jsonFileName}");
                                     continue; // TODO ... so mb warn here?
-                                
+                                }
+     
                                 if (npcSpawners.ContainsKey(spawner.Id))
                                 {
                                     _log.Warn($"Duplicate Npc Spawn Id: {spawner.Id}");
@@ -97,6 +103,7 @@ namespace AAEmu.Game.Core.Managers.World
                                     npcSpawners.Add(spawner.Id, spawner);
                                 }
                             }
+                        }
                         else
                             throw new Exception($"SpawnManager: Parse {jsonFileName} file");
                     }
@@ -119,13 +126,13 @@ namespace AAEmu.Game.Core.Managers.World
                     {
                         if (JsonHelper.TryDeserializeObject(contents, out List<DoodadSpawner> spawners, out _))
                         {
-                            var C = 0;
+                            var entry = 0;
                             foreach (var spawner in spawners)
                             {
-                                C++;
+                                entry++;
                                 if (!DoodadManager.Instance.Exist(spawner.UnitId))
                                 {
-                                    _log.Warn($"Doodad Template {spawner.UnitId} (file entry {C}) doesn't exist - {jsonFileName}");
+                                    _log.Warn($"Doodad Template {spawner.UnitId} (file entry {entry}) doesn't exist - {jsonFileName}");
                                     continue; // TODO ... so mb warn here?
                                 }
 
@@ -173,10 +180,15 @@ namespace AAEmu.Game.Core.Managers.World
                     {
                         if (JsonHelper.TryDeserializeObject(contents, out List<TransferSpawner> spawners, out _))
                         {
+                            var entry = 0;
                             foreach (var spawner in spawners)
                             {
+                                entry++;
                                 if (!TransferManager.Instance.Exist(spawner.UnitId))
-                                    continue;
+                                {
+                                    _log.Warn($"Transfer Template {spawner.UnitId} (file entry {entry}) doesn't exist - {jsonFileName}");
+                                    continue; // TODO ... so mb warn here?
+                                }
                                 
                                 if (transferSpawners.ContainsKey(spawner.Id))
                                 {
@@ -221,11 +233,16 @@ namespace AAEmu.Game.Core.Managers.World
                     {
                         if (JsonHelper.TryDeserializeObject(contents, out List<GimmickSpawner> spawners, out _))
                         {
+                            var entry = 0;
                             foreach (var spawner in spawners)
                             {
+                                entry++;
                                 if (!GimmickManager.Instance.Exist(spawner.UnitId))
-                                    continue;
-                                
+                                {
+                                    _log.Warn($"Gimmick Template {spawner.UnitId} (file entry {entry}) doesn't exist - {jsonFileName}");
+                                    continue; // TODO ... so mb warn here?
+                                }
+
                                 if (gimmickSpawners.ContainsKey(spawner.Id))
                                 {
                                     _log.Warn($"Duplicate Gimmick Spawn Id: {spawner.Id}");

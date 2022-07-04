@@ -68,7 +68,10 @@ namespace AAEmu.Game.Models.Game.NPChar
             npc.Spawn();
             _lastSpawn = npc;
             _spawned.Add(npc);
-            _scheduledCount--;
+            if (_scheduledCount > 0)
+            {
+                _scheduledCount--;
+            }
             _spawnCount++;
 
             return npc;
@@ -85,7 +88,7 @@ namespace AAEmu.Game.Models.Game.NPChar
             }
 
             if (_lastSpawn == null || _lastSpawn.ObjId == npc.ObjId)
-                _lastSpawn = _spawned.Count != 0 ? _spawned[_spawned.Count - 1] : null;
+                _lastSpawn = _spawned.Count != 0 ? _spawned[^1] : null;
         }
 
         public void DecreaseCount(Npc npc)
