@@ -301,6 +301,8 @@ namespace AAEmu.Game.Core.Managers.World
 
                             var doodad = DoodadManager.Instance.Create(0, templateId);
 
+                            doodad.Spawner = new DoodadSpawner();
+                            doodad.Spawner.UnitId = templateId;
                             doodad.DbId = dbId;
                             doodad.FuncGroupId = phaseId;
                             doodad.OwnerId = ownerId;

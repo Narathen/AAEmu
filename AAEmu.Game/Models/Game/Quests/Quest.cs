@@ -337,7 +337,6 @@ exit:
                 var selectives = new List<bool>();
                 var selective = false;
                 var complete = false;
-                var itemUseWithItemGather = 0;
 
                 for (var componentIndex = 0; componentIndex < components.Length; componentIndex++)
                 {
@@ -470,7 +469,6 @@ exit:
                                     {
                                         // компонент - выполнен
                                         Status = QuestStatus.Ready;
-                                        itemUseWithItemGather++;
                                     }
                                     else
                                     {
@@ -491,7 +489,6 @@ exit:
                                     {
                                         // компонент - выполнен
                                         Status = QuestStatus.Ready;
-                                        itemUseWithItemGather++;
                                     }
                                     else
                                     {
@@ -541,7 +538,7 @@ exit:
                 if (components.Length > 1)
                 {
                     // TODO added for quest id=4294 - нужен только itemGather, а ItemUse не нужен
-                    complete = (Template.Score > 0 ? completes.Any(b => b) : completes.All(b => b)) || itemUseWithItemGather > 1;
+                    complete = Template.Score > 0 ? completes.Any(b => b) : completes.All(b => b);
                     Status = complete ? QuestStatus.Ready : QuestStatus.Progress;
                 }
                 if (selective)

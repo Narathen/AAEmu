@@ -8,7 +8,6 @@ using AAEmu.Game.Core.Managers.World;
 using AAEmu.Game.GameData;
 using AAEmu.Game.Models.Game.AI.Params;
 using AAEmu.Game.Models.Game.AI.Utils;
-using AAEmu.Game.Models.Game.AI.v2.AiCharacters;
 using AAEmu.Game.Models.Game.Items;
 using AAEmu.Game.Models.Game.Merchant;
 using AAEmu.Game.Models.Game.Char;
@@ -61,10 +60,11 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
 
         public Npc Create(uint objectId, uint id)
         {
-            if (!_templates.ContainsKey(id))
+            var template = GetTemplate(id);
+            if ( template == null)
+            {
                 return null;
-
-            var template = _templates[id];
+            }
 
             var npc = new Npc();
             npc.ObjId = objectId > 0 ? objectId : ObjectIdManager.Instance.GetNextId();
